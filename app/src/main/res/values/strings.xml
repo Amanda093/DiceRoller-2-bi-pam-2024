@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Dice Roller</string>
     <string name="roll">Roll</string>
+    <string name="invalid_number">Digite um número entre 1 e 6</string>
+    <string name="enter_number">Insira um número</string>
 </resources>

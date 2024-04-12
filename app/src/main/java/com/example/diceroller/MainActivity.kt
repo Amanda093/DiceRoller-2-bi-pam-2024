@@ -43,8 +43,8 @@ class MainActivity : ComponentActivity() {
 fun DiceRollerApp() {
     DiceWithButtonAndImage(
         modifier = Modifier
-        .fillMaxSize()
-        .wrapContentSize(Alignment.Center)
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
     )
 }
 
@@ -52,7 +52,7 @@ fun DiceRollerApp() {
 fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
     var textField by remember { mutableStateOf( " " ) }
     var result by remember { mutableStateOf(1) }
-    var sucess by remember { mutableStateOf( "Adivinhe o Número do Dado!") }
+    var sucess by remember { mutableStateOf( "Adivinhe o número do dado!") }
     val imageResource = when (result) {
         1 -> R.drawable.dice_1
         2 -> R.drawable.dice_2
@@ -76,16 +76,16 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = textField,
             onValueChange = { textField = it },
-            label = { Text("Insira o número") },
+            label = { Text(stringResource(R.string.enter_number)) },
             isError = textField.isNotEmpty() && !isValidText(textField)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             result = (1..6).random()
-            sucess = when (result.toString()){
-                textField -> "Você Adivinhou Corretamente!"
-                else -> "Tente Novamente"
+            sucess = when (textField){
+                result.toString() -> "Você acertou!!"
+                "1", "2", "3", "4", "5", "6" -> "Tente de novo"
+                else -> "Digite um número entre 1 e 6"
             }
             textField = ""}
         ) {
@@ -93,6 +93,7 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         }
     }
 }
+
 fun isValidText(text: String): Boolean {
     return text.matches(Regex("[a-zA-Z]+"))
 }
