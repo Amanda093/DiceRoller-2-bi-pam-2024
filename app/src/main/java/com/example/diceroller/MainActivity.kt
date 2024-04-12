@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +50,9 @@ fun DiceRollerApp() {
 
 @Composable
 fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
+    var textField by remember { mutableStateOf( " " ) }
     var result by remember { mutableStateOf(1) }
+    var sucess by remember { mutableStateOf( "Adivinhe o Número do Dado!") }
     val imageResource = when (result) {
         1 -> R.drawable.dice_1
         2 -> R.drawable.dice_2
@@ -62,14 +65,35 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            "$sucess"
+        )
         Image(
             painter = painterResource(imageResource),
             contentDescription = result.toString()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { result = (1..6).random() }
+        OutlinedTextField(
+            value = textField,
+            onValueChange = { textField = it },
+            label = { Text("Insira o número") },
+            isError = textField.isNotEmpty() && !isValidText(textField)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            result = (1..6).random()
+            sucess = when (result.toString()){
+                textField -> "Você Adivinhou Corretamente!"
+                else -> "Tente Novamente"
+            }
+            textField = ""}
         ) {
             Text(stringResource(R.string.roll))
         }
     }
 }
+fun isValidText(text: String): Boolean {
+    return text.matches(Regex("[a-zA-Z]+"))
+}
+
